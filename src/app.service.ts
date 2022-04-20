@@ -1,11 +1,12 @@
 import fetch from 'node-fetch';
-
+import exifr from 'exifr';
 import sharp from 'sharp';
 import { Injectable } from '@nestjs/common';
 import { CreateImageMetadataPayload } from './app.controller';
 import { ethers } from 'ethers';
 import { arrayify, toUtf8String } from 'ethers/lib/utils';
 import { IPFSService } from 'parkydb/lib/core/ipfs';
+import { TextDecoder } from 'util';
 
 @Injectable()
 export class AppService {
@@ -17,30 +18,22 @@ export class AppService {
 
     const img = new Uint8Array(await rawResponse.arrayBuffer());
 
-    const metadata = await sharp(img).metadata();
-    if (metadata.exif) {
-      console.log(toUtf8String(metadata.exif));
+    const metadata2 = await exifr.parse(img, true);
+    if (metadata2) {
+      console.log(metadata2);
     }
-    const imageDigest = ethers.utils.sha256(new Uint8Array(img));
     try {
       const blob = await sharp(img)
         .withMetadata({
-          IFD0: {
-            Copyright: `${payload.address}`,
-            ProcessingSoftware: `du.`,
-            SubfileType: 1,
-            ImageWidth: metadata.width,
-            ImageHeight: metadata.height,
-            ImageDescription: `${payload.description}`,
-            DocumentName: `${payload.name}`,
-            Make: `${payload.deviceSignerMake}`,
-            Model: `${payload.deviceSignerModel}`,
-            Artist: `${payload.address}`,
-            RawImageDigest: `${imageDigest}`,
-            OriginalRawFileDigest: `${imageDigest}`,
-          },
-          ExifIFD: {
-            UserComment: `${payload.jwt}`,
+          exif: {
+            IFD0: {
+              Copyright: `${payload.jwt}`,
+              ImageDescription: `${payload.description}`,
+              Artist: `${payload.address}`,
+            },
+            ExifIFD: {
+              UserComment: `${payload.jwt}`,
+            },
           },
         })
         .toBuffer();
