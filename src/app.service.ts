@@ -45,8 +45,6 @@ export class AppService {
         })
         .toBuffer();
 
-
-      
       return blob;
     } catch (ee) {
       console.error(ee);

@@ -21,7 +21,5 @@ export class AppController {
   ) {
     const blob = await this.appService.createImageMetadataProvenance(payload);
     return new StreamableFile(blob);
-
-
   }
 }
