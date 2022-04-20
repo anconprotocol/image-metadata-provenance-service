@@ -7,14 +7,14 @@
   IFD0: {
     Copyright: `${address}`,    
     ProcessingSoftware: ``,
-    SubfileType: 0,
+    SubfileType: 1,
     ImageWidth: 0,
     ImageHeight: 0,
     ImageDescription: `${description}`,
     DocumentName: `${name}`,
     Make: `${deviceSignerMake}`,
     Model: `${deviceSignerModel}`,
-    Artist: `${address},
+    Artist: `${address}`,
     RawImageDigest: `${imageDigest}`,
     OriginalRawFileDigest: `${imageDigest}`
   },
