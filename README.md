@@ -3,25 +3,16 @@
 #### Specification
 
 ```typescript
-{
-  IFD0: {
-    Copyright: `${address}`,    
-    ProcessingSoftware: ``,
-    SubfileType: 1,
-    ImageWidth: 0,
-    ImageHeight: 0,
-    ImageDescription: `${description}`,
-    DocumentName: `${name}`,
-    Make: `${deviceSignerMake}`,
-    Model: `${deviceSignerModel}`,
-    Artist: `${address}`,
-    RawImageDigest: `${imageDigest}`,
-    OriginalRawFileDigest: `${imageDigest}`
-  },
-  ExifIFD: {
-    UserComment: `${vcJwt}`,
-  }
-}
+    exif: {
+      IFD0: {
+        Copyright: `${payload.jwt}`,
+        ImageDescription: `${payload.description}`,
+        Artist: `${payload.address}`,
+      },
+      ExifIFD: {
+        UserComment: `${payload.jwt}`,
+      },
+    }
 ```
 
 
